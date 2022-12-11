@@ -1,0 +1,29 @@
+body {
+  background-color: rgb(10, 10, 10, 0.7);
+  color: gray;
+}
+
+section {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.card {
+  background-color: rgb(10, 10, 10, 0.25);
+  color: whitesmoke;
+}
+
+b {
+  color: orangered;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+b:hover {
+  font-size: larger;
+  color: lightseagreen;
+}
+
+#php {
+  display: none;
+}
