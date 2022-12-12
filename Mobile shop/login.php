@@ -16,6 +16,7 @@
   <section class="h-100">
     <div class="container h-100">
       <div class="row justify-content-sm-center h-100">
+        <p style="color:orange;font-size:larger;text-align:center" id="msg"></p>
         <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
           <div class="card shadow-lg">
             <div class="card-body p-5">
@@ -65,7 +66,9 @@
       include 'db.php';
       //for admin
       $passcode = array();
+      $u = true;
       $a = array();
+      $un = array();
       $Q = "SELECT * FROM admin";
       $list = mysqli_query($db, $Q);
 
@@ -73,49 +76,66 @@
         while ($data = mysqli_fetch_assoc($list)) {
           array_push($a, "$data[email]");
           array_push($passcode, "$data[pass]");
+          array_push($un, "$data[name]");
         }
       } else {
         echo "zero resault found";
       }
       if (in_array($_POST['email'], $a)) {
-        // echo "<script>console.log('$_POST[email] is admin email')</script>";
+        $u = false;
         $key = array_search($_POST['email'], $a);
         if ($_POST['password'] == $passcode[$key])
-          echo "<script>window.location.href = 'app.php';</script>";
+          echo "<script>
+          document.getElementById('msg').innerHTML = 'Log in Successfull  Admin Name : $un[$key]'
+          setTimeout(() =>window.location.href = 'app.php',2000);
+          </script>";
         else
-          echo "<script>console.log('Password is wrong...')</script>";
+          echo "<script>
+        document.getElementById('msg').innerHTML = 'Password is wrong...'
+        </script>";
       } else {
-        echo "<script>console.log('you are not a admin')</script>";
+        echo "<script>console.log('Contact the Developer..')</script>";
       }
 
       //for user
-      $passcode = array();
-      $a = array();
-      $Q = "SELECT * FROM user";
-      $list = mysqli_query($db, $Q);
+      if ($u) {
+        $passcode = array();
+        $un = array();
+        $a = array();
+        $Q = "SELECT * FROM user";
+        $list = mysqli_query($db, $Q);
 
-      if (mysqli_num_rows($list) > 0) {
-        while ($data = mysqli_fetch_assoc($list)) {
-          array_push($a, "$data[email]");
-          array_push($passcode, "$data[pass]");
+        if (mysqli_num_rows($list) > 0) {
+          while ($data = mysqli_fetch_assoc($list)) {
+            array_push($a, "$data[email]");
+            array_push($passcode, "$data[pass]");
+            array_push($un, "$data[name]");
+          }
+        } else {
+          echo "zero resault found";
         }
-      } else {
-        echo "zero resault found";
-      }
-      print_r($a);
-      if (in_array($_POST['email'], $a)) {
-        $key = array_search($_POST['email'], $a);
-        // echo "<script>console.log('$_POST[password] is $key .--. $passcode[$key]')</script>";
-        if ($_POST['password'] == $passcode[$key])
-          echo "<script>
-          window.location.href = 'app.php';
+        print_r($a);
+        if (in_array($_POST['email'], $a)) {
+          $key = array_search($_POST['email'], $a);
+          if ($_POST['password'] == $passcode[$key])
+            echo "<script>
+        document.getElementById('msg').innerHTML = 'Log in Successfull  User Name : $un[$key]'
+        setTimeout(() =>window.location.href = 'app.php',2000);
+        </script>";
+          else
+            echo "<script>
+          document.getElementById('msg').innerHTML = 'User Password is wrong...'
           </script>";
-        else
-          echo "<script>console.log('user Password is wrong...')</script>";
-      } else {
-        echo "<script>console.log('you are not a user create a accout first')</script>";
+        } else {
+          echo "<script>
+          document.getElementById('msg').innerHTML = 'you are not a user create a accout first'
+          </script>";
+        }
+        mysqli_close($db);
+        echo "<script>
+        setTimeout(() =>document.getElementById('msg').innerHTML = '',2000);
+        </script>";
       }
-      mysqli_close($db);
     }
     ?>
 
