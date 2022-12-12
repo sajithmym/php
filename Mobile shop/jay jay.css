@@ -9,7 +9,7 @@ section {
 }
 
 .card {
-  background-color: rgb(10, 10, 10, 0.25);
+  background-color: rgba(10, 10, 10, 0.25);
   color: whitesmoke;
 }
 
@@ -28,3 +28,27 @@ b:hover {
   display: none;
 }
 
+#out{
+  margin: 0% 1%;
+  float: right;
+  background-color: black;
+  color: whitesmoke;
+  padding: 1%;
+  border-radius: 20px;
+}
+
+#show_user{
+  margin: 1%;
+  background-color: black;
+  color: whitesmoke;
+  padding: 1%;
+  border-radius: 20px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+#out:hover{
+  background-color: whitesmoke;
+  color: black;
+  cursor: pointer;
+}

@@ -86,7 +86,9 @@
         $key = array_search($_POST['email'], $a);
         if ($_POST['password'] == $passcode[$key])
           echo "<script>
-          document.getElementById('msg').innerHTML = 'Log in Successfull  Admin Name : $un[$key]'
+          document.getElementById('msg').innerHTML = 'Log in Successfull  Admin Name : $un[$key] <br> pleace wait...'
+          localStorage.setItem('data','$un[$key]')
+          localStorage.setItem('table','admin')
           setTimeout(() =>window.location.href = 'app.php',2000);
           </script>";
         else
@@ -119,7 +121,9 @@
           $key = array_search($_POST['email'], $a);
           if ($_POST['password'] == $passcode[$key])
             echo "<script>
-        document.getElementById('msg').innerHTML = 'Log in Successfull  User Name : $un[$key]'
+        document.getElementById('msg').innerHTML = 'Log in Successfull  User Name : $un[$key] <br> Pleace Wait...'
+        localStorage.setItem('data',$un[$key])
+        localStorage.setItem('table','user')
         setTimeout(() =>window.location.href = 'app.php',2000);
         </script>";
           else

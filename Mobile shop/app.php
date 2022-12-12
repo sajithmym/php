@@ -9,14 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="./jay jay.css">
     <style>
         body {
             background-color: rgba(0, 0, 0, 0.8);
         }
 
         img {
-            width: 200px !important;
-            height: 250px !important;
+            width: 220px !important;
+            height: 200px !important;
         }
 
         h1 {
@@ -30,13 +31,13 @@
         }
 
         p {
-            color: lightseagreen;
+            color: darkcyan;
         }
 
         .container {
             border: 1px solid gray;
             box-shadow: 0 0 10px whitesmoke;
-            background-color: black;
+            background-color: rgba(10, 10, 10, 0.25);
         }
 
         .col-md-3 {
@@ -51,7 +52,7 @@
         .col-md-3:hover {
             box-shadow: 0 0 30px whitesmoke;
             border-radius: 20px;
-
+            background-color: lightgray !important;
         }
 
         .show {
@@ -77,23 +78,24 @@
             font-size: larger;
         }
 
-        #dis{
+        #dis {
             margin: 10px;
         }
 
-        h3{
+        h3 {
             color: rgba(0, 0, 0, 0);
             text-align: center;
         }
 
-        h3:hover{
-            color:cornflowerblue
+        h3:hover {
+            color: cornflowerblue
         }
     </style>
 </head>
 
 <body>
-
+    <p id='out' onclick="lo()">Logout</p>
+    <div id="show_user"></div>
     <h1>Mobile shop</h1>
     <div class="container">
         <div class="row justify-content-center">
@@ -112,7 +114,7 @@
                     echo "<div class='col-md-3 text-center'> 
                     <p> Order Id is $data[id] </p>
                 <img src=$data[link] class='img-fluid'>
-                <p> Order Id is $data[name] </p>
+                <p>  $data[name] </p>
                 <button onclick='add(this)' class='btn btn-dark'> Add To Card </button>
              </div>
              ";
@@ -132,6 +134,12 @@
     <h3>Developed By Sajithmym</h3>
 
     <script>
+        user = localStorage.getItem('data')
+        table = localStorage.getItem('table')
+        console.log(user, ' - ', table)
+        document.getElementById('show_user').innerHTML = `- welcome ${user} -`
+        s = () => $('.').append()
+
         let Delete = (u) => {
             u.parentElement.remove()
         }
@@ -142,8 +150,11 @@
             </div>`
             $('#item').append(code)
             document.getElementById('item').scrollIntoView()
-            
         }
+
+        let lo = () => window.location.href = 'login.php';
+
+        admin = ['admin', 'Team Fire']
     </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>

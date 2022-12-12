@@ -16,7 +16,7 @@
   <section class="h-100">
     <div class="container h-100">
       <div class="row justify-content-sm-center h-100">
-      <p style="color:lightgreen;font-size:larger;text-align:center" id="msg"></p>
+        <p style="color:lightgreen;font-size:larger;text-align:center" id="msg"></p>
         <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
           <div class="card shadow-lg">
             <div class="card-body p-5">
@@ -45,7 +45,7 @@
                 </p>
 
                 <div class="align-items-center d-flex">
-                  
+
                   <button type="submit" name="k" class="btn btn-primary ms-auto">
                     Register
                   </button>
@@ -84,13 +84,19 @@
       $address = $_POST['email'];
       $pass = $_POST['password'];
       echo "<script>console.log('$_POST[email]')</script>";
-      $Q = "INSERT INTO `user` (`id`, `name`, `email`, `pass`) VALUES ('$num','$name','$address','$pass');";
-      $list = mysqli_query($db, $Q);
-      mysqli_close($db);
-      echo "<script>
-      document.getElementById('msg').innerHTML = 'User Created Successfully <br> Pleace Wait...'
-      setTimeout(() =>window.location.href = 'login.php',2000);
-      </script>";
+      if ($_POST['name'] == 'admin' || $_POST['name'] == 'Team Fire')
+        echo "<script>
+        alert('This User Name can not use...')
+        </script>";
+      else {
+        $Q = "INSERT INTO `user` (`id`, `name`, `email`, `pass`) VALUES ('$num','$name','$address','$pass');";
+        $list = mysqli_query($db, $Q);
+        mysqli_close($db);
+        echo "<script>
+        document.getElementById('msg').innerHTML = 'User Created Successfully <br> Pleace Wait...'
+        setTimeout(() =>window.location.href = 'login.php',2000);
+        </script>";
+      }
     }
     ?>
   </div>
