@@ -89,7 +89,7 @@
           document.getElementById('msg').innerHTML = 'Log in Successfull  Admin Name : $un[$key] <br> pleace wait...'
           localStorage.setItem('data','$un[$key]')
           localStorage.setItem('table','admin')
-          setTimeout(() =>window.location.href = 'app.php',2000);
+          setTimeout(() =>window.location.href = 'app.php',500);
           </script>";
         else
           echo "<script>
@@ -122,9 +122,9 @@
           if ($_POST['password'] == $passcode[$key])
             echo "<script>
         document.getElementById('msg').innerHTML = 'Log in Successfull  User Name : $un[$key] <br> Pleace Wait...'
-        localStorage.setItem('data',$un[$key])
+        localStorage.setItem('data','$un[$key]')
         localStorage.setItem('table','user')
-        setTimeout(() =>window.location.href = 'app.php',2000);
+        setTimeout(() =>window.location.href = 'app.php',500);
         </script>";
           else
             echo "<script>
@@ -141,6 +141,7 @@
         </script>";
       }
     }
+
     ?>
 
     <script src="js/login.js"></script>

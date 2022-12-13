@@ -9,7 +9,7 @@ function showProductItems(){
             $('.allContent-section').html(data);
         }
     });
-}
+} 
 function showCategory(){  
     $.ajax({
         url:"./adminView/viewCategories.php",
@@ -62,7 +62,7 @@ function showOrders(){
         }
     });
 }
-
+ 
 function ChangeOrderStatus(id){
     $.ajax({
        url:"./controller/updateOrderStatus.php",

@@ -94,7 +94,7 @@
         mysqli_close($db);
         echo "<script>
         document.getElementById('msg').innerHTML = 'User Created Successfully <br> Pleace Wait...'
-        setTimeout(() =>window.location.href = 'login.php',2000);
+        setTimeout(() =>window.location.href = 'login.php',500);
         </script>";
       }
     }

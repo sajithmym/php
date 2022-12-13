@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order</title>
+    <title>Smart Mobile Shop</title>
+    <link rel="icon" href="i.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -22,7 +23,9 @@
 
         h1 {
             text-align: center;
-            color: orangered;
+            color: rgba(155, 50, 31, 1);
+            margin: 15px;
+            text-decoration: underline;
         }
 
         #j {
@@ -90,13 +93,130 @@
         h3:hover {
             color: cornflowerblue
         }
+
+        .pop {
+            height: 170px;
+            align-items: center;
+            margin: 1% 40%;
+            background-color: rgb(4, 4, 164, 0.3);
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .pop input {
+            display: flex;
+            margin: 10px;
+            border-radius: 10px;
+            transition: all 1s;
+        }
+
+        .pop input[type='submit'],
+        .pop input[type='button'] {
+            background-color: rgb(80, 54, 54);
+            float: right;
+            font-size: larger;
+        }
+
+        .pop input[type='submit']:hover,
+        .pop input[type='button']:hover {
+            background-color: orangered;
+        }
+
+        .fa-solid:hover{
+            color: red;
+        }
+
+        th{
+            font-size: larger;
+            color: red;
+            margin-top: 10px;
+        }
+
+        td{
+            font-size: large;
+            color: yellowgreen;
+            margin-top: 10px;
+        }
+        
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
+    <script>
+        user = localStorage.getItem('data')
+        if (!user)
+            window.location.href = 'ms.html';
+    </script>
+
     <p id='out' onclick="lo()">Logout</p>
     <div id="show_user"></div>
-    <h1>Mobile shop</h1>
+    <div id="access"></div>
+    <div class="method">
+        <?php
+        $saj = new mysqli('localhost', 'root', '', 'phone');
+        if (mysqli_connect_errno()) {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+            exit();
+        }
+
+        if (isset($_POST['okay'])) {
+            echo "<script>console.log('Add pressed $_POST[nameadd]')</script>";
+            if ($_POST['nameadd'] == '' || $_POST['linkadd'] == '')
+                echo "<script>alert('Input Field is Empty');</script>";
+            else {
+                $Item_List = array();
+                $Q = "SELECT * FROM list";
+                $list = mysqli_query($saj, $Q);
+
+                if (mysqli_num_rows($list) > 0) {
+                    while ($data = mysqli_fetch_assoc($list)) {
+                        array_push($Item_List, "$data[name]");
+                    }
+                    $num = count($Item_List);
+                } else {
+                    echo "zero resault found";
+                    $num = 0;
+                }
+                try {
+                    $Q = "INSERT INTO `list` (`id`, `link`, `name`) VALUES ('$num', '\"$_POST[linkadd]\" ', '$_POST[nameadd]');";
+                    $list = mysqli_query($saj, $Q);
+                    echo "$_POST[nameadd] phone Added Successfully...";
+                } catch (Exception $e) {
+                    echo "error : ".$e->getMessage();
+                }
+            }
+        }
+        if (isset($_POST['view'])) {
+            echo "_View_";
+        }
+
+        if (isset($_POST['del'])) {
+            $Item_List = array();
+            $Q = "SELECT * FROM list";
+            $list = mysqli_query($saj, $Q);
+
+            if (mysqli_num_rows($list) > 0) {
+                while ($data = mysqli_fetch_assoc($list)) {
+                    array_push($Item_List, "$data[name]");
+                }
+            } else {
+                echo "zero resault found";
+            }
+
+            echo "<center>
+            <table>
+                <tr> <Th> Mobile Name </Th> <Th></Th></tr>";
+            for ($i = 0; $i != count($Item_List); $i++) {
+                echo "<tr> <td> $Item_List[$i] </td>  <td><i class='fa-solid fa-delete-left'></i></td></tr>";
+            }
+            echo "</table>
+             </center>";
+        }
+        mysqli_close($saj);
+        ?>
+    </div>
+    <h1>Smart Mobile shop Online Store</h1>
     <div class="container">
         <div class="row justify-content-center">
             <?php
@@ -116,9 +236,7 @@
                 <img src=$data[link] class='img-fluid'>
                 <p>  $data[name] </p>
                 <button onclick='add(this)' class='btn btn-dark'> Add To Card </button>
-             </div>
-             ";
-                    // echo $data['id'],' ',$data['link'],' ',$data['name'],'<br>';
+             </div>";
                 }
             } else {
                 echo "zero resault found";
@@ -133,31 +251,8 @@
     <div class="container" id="item"></div>
     <h3>Developed By Sajithmym</h3>
 
-    <script>
-        user = localStorage.getItem('data')
-        table = localStorage.getItem('table')
-        console.log(user, ' - ', table)
-        document.getElementById('show_user').innerHTML = `- welcome ${user} -`
-        s = () => $('.').append()
-
-        let Delete = (u) => {
-            u.parentElement.remove()
-        }
-
-        let add = (i) => {
-            let code = `<div id='dis'>
-            <li> ${i.parentElement.children[2].innerHTML} </li> <button id='j' onclick="Delete(this)"><i class="fa-solid fa-trash-can"></i></button>
-            </div>`
-            $('#item').append(code)
-            document.getElementById('item').scrollIntoView()
-        }
-
-        let lo = () => window.location.href = 'login.php';
-
-        admin = ['admin', 'Team Fire']
-    </script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="./app.js"></script>
 
 </body>
 

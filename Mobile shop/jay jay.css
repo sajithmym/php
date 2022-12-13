@@ -52,3 +52,48 @@ b:hover {
   color: black;
   cursor: pointer;
 }
+
+#out_stand{
+  margin: 1%;
+  background-color: rgba(10, 10, 10, 0.1);;
+  color: whitesmoke;
+  padding: 1%;
+  border-radius: 20px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+#out_stand:hover{
+  background-color: whitesmoke;
+  color: black;
+}
+
+#access{
+  background-color: rgba(10, 10, 10, 0.5);
+}
+
+.pop{
+  height: 170px;
+  align-items: center;
+  margin: 0 40%;
+  background-color: rgb(4, 4, 164,0.3);
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.pop input{
+  display: flex;
+  margin: 10px;
+  border-radius: 10px;
+  transition: all 1s;
+}
+
+.pop input[type='submit'],.pop input[type='button']{
+  background-color: rgb(80, 54, 54);
+  float: right;
+  font-size: larger;
+}
+
+.pop input[type='submit']:hover,.pop input[type='button']:hover{
+  background-color: orangered;
+}
