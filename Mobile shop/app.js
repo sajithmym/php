@@ -1,9 +1,9 @@
 user = localStorage.getItem('data')
 table = localStorage.getItem('table')
 document.getElementById('show_user').innerHTML = `- welcome ${user} -`
-
 let Delete = (u) => {
-    u.parentElement.remove()
+    // console.log(u.parentElement.parentElement);
+    u.parentElement.parentElement.remove()
 }
 
 let DeleteMethod = () => {
@@ -12,9 +12,14 @@ let DeleteMethod = () => {
 
 let additem = () => {
     try {
+        document.getElementById('delteing').remove()
         DeleteMethod()
     } catch (error) {
-        console.log('hellow');
+        try {
+          DeleteMethod()
+        } catch (error) {
+          console.log('hi');
+        }
     }
     $('.method').append(`<div class="pop" id='popid'>
     <form method="POST" autocomplete="off">
@@ -27,46 +32,50 @@ let additem = () => {
 }
 
 let add = (i) => {
-    let code = `<div id='dis'>
-            <li> ${i.parentElement.children[2].innerHTML} </li> <button id='j' onclick="Delete(this)"><i class="fa-solid fa-trash-can"></i></button>
-            </div>`
+
+    let code = `<tr id='dis'>
+                <th id='ko'> ${i.parentElement.children[2].innerHTML} </th> 
+                <th id='ko'> <i onclick="Delete(this)" class="fa-solid fa-trash-can"></i> </th>
+            </tr>`
     $('#item').append(code)
     document.getElementById('item').scrollIntoView()
 }
 
-let lo = () => window.location.href = 'login.php';
-
+let lo = () =>{
+  localStorage.setItem('data','')
+  window.location.href = 'login.php';
+}
 admin = ['Admin', 'Team Fire']
 if (admin.includes(user)) {
     ok = ` <center>
     <form method="post">
-    <input
-    type="submit"
+
+    <a href='app.php'><input
+    type="button"
     value="Home Page"
-    id="out_stand"
-    name="add"
-  />
+    id="out_stand" /> </a>
+
     <input
     type="button"
     onclick="additem()"
     value="Add a Item"
     id="out_stand"
-    name="add"
-  />
+    name="add"/>
+
   <input
     type="submit"
     onclick=""
     value="Delete a Item"
     id="out_stand"
-    name="del"
-  />
+    name="del"/>
+
   <input
     type="submit"
     onclick=""
     value="View Order Details"
     id="out_stand"
-    name="view"
-  /></form>
+    name="view" />
+    </form>
                     </center>
             `
     $('#access').append(ok)

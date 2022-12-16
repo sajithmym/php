@@ -64,25 +64,10 @@
             font-weight: bolder;
         }
 
-        #dis {
-            display: flex;
-            justify-content: center;
-        }
-
         i {
             color: rgba(220, 133, 20, 0.731);
             padding-top: 7px;
             padding-left: 20px;
-        }
-
-        li {
-            list-style-type: none;
-            color: azure;
-            font-size: larger;
-        }
-
-        #dis {
-            margin: 10px;
         }
 
         h3 {
@@ -122,31 +107,41 @@
             background-color: orangered;
         }
 
-        .fa-solid:hover{
+        .fa-solid:hover {
             color: red;
         }
 
-        th{
+        th {
             font-size: larger;
             color: red;
             margin-top: 10px;
         }
 
-        td{
+        td {
             font-size: large;
             color: yellowgreen;
             margin-top: 10px;
         }
-        
+
+        a {
+            text-decoration: none;
+        }
+
+        .dis {
+            text-align: center;
+        }
+
+        #ko {
+            color: gray;
+        }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+    </head>
 
 <body>
     <script>
         user = localStorage.getItem('data')
-        if (!user)
-            window.location.href = 'ms.html';
+        if (!user || user=='')
+            window.location.href = 'login.php';
     </script>
 
     <p id='out' onclick="lo()">Logout</p>
@@ -158,6 +153,11 @@
         if (mysqli_connect_errno()) {
             echo "Failed to connect to MySQL: " . mysqli_connect_error();
             exit();
+        }
+
+        if (isset($_GET['id_item'])) {
+            $q = "DELETE FROM list WHERE `list`.`id` = $_GET[id_item]";
+            $delete = mysqli_query($saj, $q);
         }
 
         if (isset($_POST['okay'])) {
@@ -183,7 +183,7 @@
                     $list = mysqli_query($saj, $Q);
                     echo "$_POST[nameadd] phone Added Successfully...";
                 } catch (Exception $e) {
-                    echo "error : ".$e->getMessage();
+                    echo "error : " . $e->getMessage();
                 }
             }
         }
@@ -194,24 +194,29 @@
         if (isset($_POST['del'])) {
             $Item_List = array();
             $Q = "SELECT * FROM list";
+            $id_item = array();
             $list = mysqli_query($saj, $Q);
 
             if (mysqli_num_rows($list) > 0) {
                 while ($data = mysqli_fetch_assoc($list)) {
                     array_push($Item_List, "$data[name]");
+                    array_push($id_item, "$data[id]");
                 }
             } else {
                 echo "zero resault found";
             }
 
-            echo "<center>
+            echo "<div id='delteing'><center>
             <table>
                 <tr> <Th> Mobile Name </Th> <Th></Th></tr>";
             for ($i = 0; $i != count($Item_List); $i++) {
-                echo "<tr> <td> $Item_List[$i] </td>  <td><i class='fa-solid fa-delete-left'></i></td></tr>";
+                echo "<tr> <td> $Item_List[$i] </td>  <td>
+                <a href='app.php?id_item=$id_item[$i]'
+                <i class='fa-solid fa-delete-left'></i> </a>
+                </td></tr>";
             }
             echo "</table>
-             </center>";
+             </center> </div>";
         }
         mysqli_close($saj);
         ?>
@@ -248,10 +253,15 @@
 
     <h1 style="margin-top: 20px;">Add to Card Items</h1>
 
-    <div class="container" id="item"></div>
+    <center>
+        <table>
+            <div class="container" id="item"></div>
+        </table>
+    </center>
     <h3>Developed By Sajithmym</h3>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
     <script src="./app.js"></script>
 
 </body>
