@@ -17,24 +17,27 @@
             text-align: center;
             margin-top: 40px;
             box-shadow: 0 0 5px black;
+            padding: 5px;
+            border-radius: 20px;
         }
         th{
             font-weight: bolder;
-            font-size: x-large;
-            color: black;
-            padding: 10px;
+            font-size: xx-large;
+            color: darkred;
+            padding: 15px;
+            border-radius: 10px;
         }
 
         td{
             font-weight: bolde;
-            font-size: large;
-            color: orangered;
-            padding: 10px;
+            font-size: x-large;
+            color: purple;
+            padding: 13px;
         }
 
         caption{
             margin: 15px;
-            color: orange;
+            color: darkblue;
             font-size: large;
         }
 
