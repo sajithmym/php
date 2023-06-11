@@ -1,6 +1,6 @@
 body {
-  background-color: rgb(10, 10, 10, 0.7);
-  color: gray;
+  background-color: rgba(10, 10, 10, 0.6);
+  color: grey;
 }
 
 section {
@@ -9,19 +9,25 @@ section {
 }
 
 .card {
-  background-color: rgba(10, 10, 10, 0.25);
-  color: whitesmoke;
+  background-color: rgba(255, 255, 255, 1);
+  color: darkblue;
+  opacity: 0.7;
+}
+
+.mb-3 input{
+  border: 2px solid black;
+  border-radius: 5px;
 }
 
 b {
-  color: orangered;
+  color: darkred;
   transition: all 0.5s;
   cursor: pointer;
 }
 
 b:hover {
   font-size: larger;
-  color: lightseagreen;
+  color: rgb(15, 91, 87);
 }
 
 #php {
@@ -31,32 +37,31 @@ b:hover {
 #out{
   margin: 0% 1%;
   float: right;
-  background-color: black;
-  color: whitesmoke;
+  background-color: lightcyan;
+  color: black;
   padding: 1%;
   border-radius: 20px;
 }
 
 #show_user{
   margin: 1%;
-  background-color: black;
-  color: whitesmoke;
+  background-color: lightcyan;
+  color: black;
   padding: 1%;
   border-radius: 20px;
   width: fit-content;
   cursor: pointer;
 }
 
-#out:hover{
-  background-color: whitesmoke;
-  color: black;
+#out:hover,#show_user:hover{
+  background-color: orangered;
   cursor: pointer;
 }
 
 #out_stand{
   margin: 1%;
   background-color: rgba(10, 10, 10, 0.1);;
-  color: whitesmoke;
+  color: black;
   padding: 1%;
   border-radius: 20px;
   width: fit-content;
@@ -69,32 +74,35 @@ b:hover {
 }
 
 #access{
-  background-color: rgba(10, 10, 10, 0.5);
+  background-color: rgba(239, 236, 236, 0.993);
 }
 
-.pop{
-  height: 170px;
-  align-items: center;
-  margin: 0 40%;
-  background-color: rgb(4, 4, 164,0.3);
+#minas{
+  margin-left: 20px !important;
+  color: black;
+  border: none;
+  font-weight: bolder;
+  background-color: inherit;
+}
+
+#plus{
+  color: black;
+  margin: 0;
+  border: none;
+  font-weight: bolder;
+  background-color: inherit;
+}
+
+#minas:hover,#plus:hover{
+  color: blue;
+}
+
+#item {
+  background-color: inherit;
+  width: max-content;
   padding: 20px;
-  border-radius: 20px;
 }
 
-.pop input{
-  display: flex;
-  margin: 10px;
-  border-radius: 10px;
-  transition: all 1s;
+#item:hover{
+  background-color: rgba(0, 0, 0, 0.08);
 }
-
-.pop input[type='submit'],.pop input[type='button']{
-  background-color: rgb(80, 54, 54);
-  float: right;
-  font-size: larger;
-}
-
-.pop input[type='submit']:hover,.pop input[type='button']:hover{
-  background-color: orangered;
-}
-

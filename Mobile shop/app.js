@@ -1,27 +1,29 @@
 user = localStorage.getItem('data')
 table = localStorage.getItem('table')
 document.getElementById('show_user').innerHTML = `- welcome ${user} -`
-let Delete = (u) => {
-    // console.log(u.parentElement.parentElement);
-    u.parentElement.parentElement.remove()
+
+let Delete = (u, item) => {
+  u.parentElement.parentElement.remove()
+  selecting.splice(selecting.indexOf(item), 1)
+  console.log(selecting);
 }
 
 let DeleteMethod = () => {
-    document.getElementById('popid').remove()
+  document.getElementById('popid').remove()
 }
 
 let additem = () => {
+  try {
+    document.getElementById('delteing').remove()
+    DeleteMethod()
+  } catch (error) {
     try {
-        document.getElementById('delteing').remove()
-        DeleteMethod()
+      DeleteMethod()
     } catch (error) {
-        try {
-          DeleteMethod()
-        } catch (error) {
-          console.log('hi');
-        }
+      console.log('hi');
     }
-    $('.method').append(`<div class="pop" id='popid'>
+  }
+  $('.method').append(`<div class="pop" id='popid'>
     <form method="POST" autocomplete="off">
       <input type="text" name="nameadd" placeholder="Enter item Name">
       <input type="text" name="linkadd" placeholder="Enter item Image URL">
@@ -31,26 +33,77 @@ let additem = () => {
   </div>`)
 }
 
-let add = (i) => {
+let order = () => {
+  all = []
+  all.push({user})
+  for (i=0;i!=selecting.length;++i){
+    io = document.getElementById('item')
+    nm = io.parentElement.children[0].children[i].children[0].children[0].innerHTML
+    qty  = io.parentElement.children[0].children[i].children[1].children[1].innerHTML
+    all.push({nm,qty})
+  }
 
+  $.ajax({
+    url: "saveorder.php",
+    method : 'post',
+    data: {d : JSON.stringify( all )},
+    success: function (response) {
+      console.log(response);
+    }
+  });
+  alert('Order has Been Sent to client')
+}
+
+let dec = (i) => {
+  if (parseInt(i.parentElement.children[1].innerHTML) != 1)
+    i.parentElement.children[1].innerHTML = parseInt(i.parentElement.children[1].innerHTML) - 1
+}
+
+let inc = (i) => {
+  i.parentElement.children[1].innerHTML = parseInt(i.parentElement.children[1].innerHTML) + 1
+}
+
+
+let add = (i) => {
+  if (!selecting.includes(i.parentElement.children[2].innerHTML)) {
     let code = `<tr id='dis'>
-                <th id='ko'> ${i.parentElement.children[2].innerHTML} </th> 
-                <th id='ko'> <i onclick="Delete(this)" class="fa-solid fa-trash-can"></i> </th>
+                <th id='ko'> <b style='color:Darkblue'>${i.parentElement.children[2].innerHTML}</b></th> 
+                <th id='ko'> <button id='minas' onclick="dec(this)">-</button>
+                 <b>1</b>
+                <button id='plus' onclick="inc(this)">+</button> </th>
+                <th id='ko'> <i style="margin-left:30px;" onclick="Delete(this,'${i.parentElement.children[2].innerHTML}')" class="fa-solid fa-trash-can"></i> </th>
             </tr>`
     $('#item').append(code)
     document.getElementById('item').scrollIntoView()
+    selecting.push(i.parentElement.children[2].innerHTML)
+  } else {
+    alert(' - Already Item Added -')
+  }
 }
 
-let lo = () =>{
-  localStorage.setItem('data','')
+let initialadd = (name,qty) => {
+  let code = `<tr id='dis'>
+                <th id='ko'> <b style='color:darkblue'>${name}</b></th> 
+                <th id='ko'> <button id='minas' onclick="dec(this)">-</button>
+                 <b>${qty}</b>
+                <button id='plus' onclick="inc(this)">+</button> </th>
+                <th id='ko'> <i style="margin-left:30px;" onclick="Delete(this,'${name}')" class="fa-solid fa-trash-can"></i> </th>
+            </tr>`
+    $('#item').append(code)
+    selecting.push(name)
+}
+
+let lo = () => {
+  localStorage.setItem('data', '')
   window.location.href = 'login.php';
 }
-admin = ['Admin', 'Team Fire']
+admin = ['Admin', 'SaJiTh']
 if (admin.includes(user)) {
-    ok = ` <center>
+  document.getElementById('useronly').remove()
+  ok = ` <center>
     <form method="post">
 
-    <a href='app.php'><input
+    <a href=''><input
     type="button"
     value="Home Page"
     id="out_stand" /> </a>
@@ -76,7 +129,7 @@ if (admin.includes(user)) {
     id="out_stand"
     name="view" />
     </form>
-                    </center>
+        </center>           
             `
-    $('#access').append(ok)
+  $('#access').append(ok)
 }

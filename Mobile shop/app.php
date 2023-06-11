@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="./jay jay.css">
     <style>
         body {
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: whitesmoke;
         }
 
         img {
@@ -23,9 +23,9 @@
 
         h1 {
             text-align: center;
+            font-weight: bolder;
             color: rgba(155, 50, 31, 1);
             margin: 15px;
-            text-decoration: underline;
         }
 
         #j {
@@ -38,9 +38,9 @@
         }
 
         .container {
-            border: 1px solid gray;
-            box-shadow: 0 0 10px whitesmoke;
-            background-color: rgba(10, 10, 10, 0.25);
+            box-shadow: 0 0 3px whitesmoke;
+            background-color: whitesmoke;
+            border-radius: 20px;
         }
 
         .col-md-3 {
@@ -65,27 +65,32 @@
         }
 
         i {
-            color: rgba(220, 133, 20, 0.731);
+            color: black;
             padding-top: 7px;
             padding-left: 20px;
         }
 
         h3 {
-            color: rgba(0, 0, 0, 0);
+            color: cornflowerblue;
             text-align: center;
-        }
-
-        h3:hover {
-            color: cornflowerblue
+            font-size: small;
         }
 
         .pop {
+            margin-left: 40%;
             height: 170px;
             align-items: center;
-            margin: 1% 40%;
+            width: fit-content;
             background-color: rgb(4, 4, 164, 0.3);
             padding: 20px;
             border-radius: 20px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .pop {
+                margin-left: 20%;
+                ;
+            }
         }
 
         .pop input {
@@ -97,7 +102,8 @@
 
         .pop input[type='submit'],
         .pop input[type='button'] {
-            background-color: rgb(80, 54, 54);
+            background-color: lightsteelblue;
+            text-align: center;
             float: right;
             font-size: larger;
         }
@@ -105,6 +111,11 @@
         .pop input[type='submit']:hover,
         .pop input[type='button']:hover {
             background-color: orangered;
+        }
+
+        .fa-solid {
+            color: black;
+            margin-left: 5px;
         }
 
         .fa-solid:hover {
@@ -119,8 +130,9 @@
 
         td {
             font-size: large;
-            color: yellowgreen;
+            color: darkcyan;
             margin-top: 10px;
+            font-weight: bolder;
         }
 
         a {
@@ -135,17 +147,18 @@
             color: gray;
         }
     </style>
-    </head>
+</head>
 
 <body>
     <script>
+        selecting = []
         user = localStorage.getItem('data')
-        if (!user || user=='')
+        if (!user || user == '')
             window.location.href = 'login.php';
     </script>
 
     <p id='out' onclick="lo()">Logout</p>
-    <div id="show_user"></div>
+    <div id='show_user' name='su'></div>
     <div id="access"></div>
     <div class="method">
         <?php
@@ -158,6 +171,10 @@
         if (isset($_GET['id_item'])) {
             $q = "DELETE FROM list WHERE `list`.`id` = $_GET[id_item]";
             $delete = mysqli_query($saj, $q);
+            echo "<script> 
+            us = localStorage.getItem('data')
+            window.location.href = 'app.php?user='+us
+            </script>";
         }
 
         if (isset($_POST['okay'])) {
@@ -178,17 +195,22 @@
                     echo "zero resault found";
                     $num = 0;
                 }
-                try {
-                    $Q = "INSERT INTO `list` (`id`, `link`, `name`) VALUES ('$num', '\"$_POST[linkadd]\" ', '$_POST[nameadd]');";
-                    $list = mysqli_query($saj, $Q);
-                    echo "$_POST[nameadd] phone Added Successfully...";
-                } catch (Exception $e) {
-                    echo "error : " . $e->getMessage();
+
+                if ((in_array("$_POST[nameadd]", $Item_List))) {
+                    echo "Error Found ->  Duplicate entry '$_POST[nameadd]' For Phone Name Try with Another Name";
+                } else {
+                    try {
+                        $Q = "INSERT INTO `list` ( `link`, `name`) VALUES ( '\"$_POST[linkadd]\" ', '$_POST[nameadd]');";
+                        $list = mysqli_query($saj, $Q);
+                        echo "$_POST[nameadd] phone Added Successfully...";
+                    } catch (Exception $e) {
+                        echo '';
+                    }
                 }
             }
         }
         if (isset($_POST['view'])) {
-            echo "_View_";
+            echo "<script> window.location.href = 'view.php' </script>";
         }
 
         if (isset($_POST['del'])) {
@@ -221,7 +243,7 @@
         mysqli_close($saj);
         ?>
     </div>
-    <h1>Smart Mobile shop Online Store</h1>
+    <h1>UOK MOBILE SHOP ONLINE STORE</h1>
     <div class="container">
         <div class="row justify-content-center">
             <?php
@@ -257,12 +279,46 @@
         <table>
             <div class="container" id="item"></div>
         </table>
+
+        <input id='useronly' type="button" value="Place Order" class="btn btn-success" style="margin: 15pt;" onclick="order()">
     </center>
-    <h3>Developed By Sajithmym</h3>
+    <h3>- Design & Developed By Team Cyber boys -</h3>
+
+    <input type="button" class="btn btn-dark" value="-----" style='width:100%'>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <script src="./app.js"></script>
+    <div style="display:none;">
+        <?php
+        if (isset($_GET['user']))
+            try {
+                $servername = "localhost";
+                $username = "root";
+                $password = "";
+                $dbname = "save";
+
+                $db = mysqli_connect($servername, $username, $password, $dbname);
+                if (!$db) {
+                    die("Connection failed: " . mysqli_connect_error());
+                }
+
+                $item = array();
+                $qty = array();
+                $Q = "SELECT * FROM $_GET[user]";
+                $list = mysqli_query($db, $Q);
+
+                if (mysqli_num_rows($list) > 0) {
+                    while ($data = mysqli_fetch_assoc($list))
+                        echo "<script> initialadd('$data[item]',$data[qty]) </script>";
+                    echo "initialadd($data[item],$data[qty])";
+                }
+            } catch (Exception $e) {
+                echo "";
+            }
+        mysqli_close($db);
+        ?>
+    </div>
 
 </body>
 

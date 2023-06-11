@@ -10,13 +10,24 @@
   <link rel="icon" href="i.ico" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous" />
   <link rel="stylesheet" href="./jay jay.css" />
+  <style>
+    body {
+      background-image: url("./s.jpg");
+      height: 100%;
+
+      /* Center and scale the image nicely */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
 </head>
 
 <body>
   <section class="h-100">
     <div class="container h-100">
       <div class="row justify-content-sm-center h-100">
-        <p style="color:orange;font-size:larger;text-align:center" id="msg"></p>
+        <p style="color:black;font-size:x-large;text-align:center;font-weight:bolder;" id="msg"></p>
         <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
           <div class="card shadow-lg">
             <div class="card-body p-5">
@@ -47,13 +58,14 @@
                 </div>
               </form>
             </div>
-          </div>
-          <div class="card-footer py-3 border-0">
+            <div class="card-footer py-3 border-0">
             <div class="text-center">
               Don't have an account?
               <b onclick="goreg()">Create One</b>
             </div>
           </div>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -84,12 +96,20 @@
       if (in_array($_POST['email'], $a)) {
         $u = false;
         $key = array_search($_POST['email'], $a);
-        if ($_POST['password'] == $passcode[$key])
+        $pass = $_POST['password'];
+        $enc_pass = '%^&*#@';
+        $symbols = array(')', '!', '@', '#', '$', '%', '^', '&', '*', '(');
+        echo $enc_pass;
+        for ($i = 0; $i != strlen($pass); $i++) {
+          $enc_pass .= $symbols[$pass[$i]];
+        }
+
+        if ($enc_pass == $passcode[$key])
           echo "<script>
           document.getElementById('msg').innerHTML = 'Log in Successfull  Admin Name : $un[$key] <br> pleace wait...'
           localStorage.setItem('data','$un[$key]')
           localStorage.setItem('table','admin')
-          setTimeout(() =>window.location.href = 'app.php',500);
+          setTimeout(() =>window.location.href = 'app.php?user=$un[$key]',500);
           </script>";
         else
           echo "<script>
@@ -119,17 +139,25 @@
         print_r($a);
         if (in_array($_POST['email'], $a)) {
           $key = array_search($_POST['email'], $a);
-          if ($_POST['password'] == $passcode[$key])
+          $pass = $_POST['password'];
+          $enc_pass = '%^&*#@';
+          $symbols = array(')', '!', '@', '#', '$', '%', '^', '&', '*', '(');
+          echo $enc_pass;
+          for ($i = 0; $i != strlen($pass); $i++) {
+            $enc_pass .= $symbols[$pass[$i]];
+          }
+
+          if ($enc_pass == $passcode[$key])
             echo "<script>
-        document.getElementById('msg').innerHTML = 'Log in Successfull  User Name : $un[$key] <br> Pleace Wait...'
-        localStorage.setItem('data','$un[$key]')
-        localStorage.setItem('table','user')
-        setTimeout(() =>window.location.href = 'app.php',500);
-        </script>";
+                  document.getElementById('msg').innerHTML = 'Log in Successfull  User Name : $un[$key] <br> Pleace Wait...'
+                  localStorage.setItem('data','$un[$key]')
+                  localStorage.setItem('table','user')
+                  setTimeout(() =>window.location.href = 'app.php?user=$un[$key]',500);
+                  </script>";
           else
             echo "<script>
-          document.getElementById('msg').innerHTML = 'User Password is wrong...'
-          </script>";
+                  document.getElementById('msg').innerHTML = 'User Password is wrong...'
+                  </script>";
         } else {
           echo "<script>
           document.getElementById('msg').innerHTML = 'you are not a user create a accout first'
@@ -147,6 +175,7 @@
     <script src="js/login.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="./Logic.js"></script>
+
 </body>
 
 </html>
